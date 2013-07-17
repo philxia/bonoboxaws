@@ -34,6 +34,12 @@ abbr,acronym { border:0;}
   -webkit-font-smoothing: antialiased;
 }
 
+iframe {
+  margin: 5px;
+  width: 100%;
+  height: 100%;
+}
+
 body {
 	margin: 0px;
 	padding: 0px;
@@ -41,10 +47,6 @@ body {
 	color: #666;
 	font-size:12px;
 	line-height: 150%;
-}
-
-iframe {
-	margin: 5px;
 }
 
 #header {

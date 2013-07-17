@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Model</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+	<style type="text/css">
+	body{
+		margin: 0;
+		-moz-user-select:-moz-none;
+		-khtml-user-select: none;
+		-webkit-user-select: none;
+	}
+	</style>
+	<%= javascript_include_tag 'modelviewer' %>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  	<style>
+  	body {
+  		width: 100%;
+  		height: 100%;
+  	}
+  	.ui-progressbar {
+  		position: relative;
+  	}
+  	.progress-label {
+  		position: absolute;
+  		left: 50%;
+  		top: 4px;
+  		font-weight: bold;
+  		text-shadow: 1px 1px 0 #fff;
+  		z-index: 120;
+  	}
+  	div {
+  		position: relative;
+  		float: left;	
+  	}
+
+  	canvas {  	
+  		position: relative;
+  		/*float: top;	*/
+  		z-index: 90;
+  	}
+
+  	#canvas3d {
+  		width: 100%;
+  		height: 100%;
+  	}
+
+  	#progressbar {
+  		position: absolute;
+  		z-index: 100;
+  		width: 100%;
+  		top: 48%;
+  	}
+  	</style>
+
+</head>
+<body>
+	<div id="progressbar"><div class="progress-label">Loading...</div></div>
+	<canvas id="canvas3d"></canvas>
+	<script type="text/javascript">
+
+	var progressbar = $( "#progressbar" ),
+      progressLabel = $( ".progress-label" );
+ 
+    progressbar.progressbar({
+      value: false,
+      change: function() {
+        progressLabel.text( progressbar.progressbar( "value" ) + "%" );
+      },
+      complete: function() {
+        progressLabel.text( "Complete!" );
+        $("#progressbar").remove();
+      }
+    });
+
+	var scene = SceneJS.createScene(
+	{
+		id:"theScene",
+		canvasId:"canvas3d",
+		nodes:[
+			// light
+			{
+				type: "lights",
+				lights:[
+
+                    // This directional light is in World-space, meaning that
+                    // it will move relative to our changing viewpoint, as if it
+                    // were a fixture in the scene.
+                    {
+                        mode:"dir",
+                        color:{ r:0.7, g:0.7, b:0.7 },
+                        diffuse:true,
+                        specular:true,
+                        dir:{ x:1.0, y:-0.57, z:-1.2 },
+                        space:"world"
+                    },
+                    {
+                        mode:"dir",
+                        color:{ r:0.6, g:0.6, b:0.6 },
+                        diffuse:true,
+                        specular:false,
+                        dir:{ x:-1.0, y:0.51, z:-1.3 },
+                        space:"world"
+                    }
+                ],
+                nodes:[
+                //Viewing transform
+				{
+					type: "lookAt",
+					id: "theLookAt",
+					
+
+					nodes: [
+					// Projection
+					{
+						type: "camera",
+						optics: {
+							type: "perspective",
+							fovy: 25.0,
+							aspect: 1.47,
+							near: 0.10,
+							far: 30000.0
+						},
+						nodes:[
+						{
+							type: "material",
+							color:{r:0.5, g:0.5, b:0.6},
+							nodes: [
+							{
+								type: "shader",
+								id: "myShader",
+								shaders: [
+								{
+									stage: "fragment",
+									code: [
+									"uniform bool clipEnabled;", 
+									"uniform bool clipInside;", 
+									"uniform vec4 clipNormalAndDist;", 
+									"vec4 myWorldPosFunc(vec4 pos){", 
+									"   if (clipEnabled) {", 
+									"        float dist = dot(pos.xyz, clipNormalAndDist.xyz) - clipNormalAndDist.w;", 
+									"        if (clipInside) {", 
+									"            if (dist < 0.0) { discard; }", 
+									"        } else {", 
+									"            if (dist > 0.0) { discard; }", 
+									"        }", 
+									"   }", 
+									"   return pos;", 
+									"}"],
+									hooks: {worldPos: "myWorldPosFunc"}
+								}],
+								// Optional initial values for uniforms within our GLSL:
+								params: {time: 0.5, clipEnabled: !0,clipInside: 0,clipNormalAndDist: [1, 0, 0, 50]},
+
+								// This teapot will enjoy our custom shader injection:
+								nodes:[
+								{
+									type:"translate",
+									id: "translateNode",
+									x: 0,
+									y: 0,
+									z: 0,
+									nodes:[
+									{
+										type: "material",
+										id: "theGeometryParent",
+										baseColor: { r: 0.5, g: 0.5, b: 0.6 },
+										specularColor: { r: 0.9, g: 0.9, b: 0.9 },
+										specular: 0.5,
+										shine: 6.0,
+
+									}]
+
+								}]
+							}]
+						}]
+					}]
+				}]
+			}]
+	});
+
+	var translateNode = SceneJS.scene("theScene").findNode("translateNode");
+
+	function loadModelWithCenterpoint(centerpoint) {
+		var parent = SceneJS.scene("theScene").findNode("theGeometryParent");
+		for (var n in window.modelNodes) {
+			parent.add("node", window.modelNodes[n]);
+		}
+
+		// add a clip transparent plane.
+		parent.add("node", 
+			{
+				type:"flags",
+				flags:{
+					transparent: true
+				},
+				nodes:[
+				{
+					type:"material",
+					color:{
+						r:1, g:1, b:1
+					},
+					alpha: 0.1,
+					nodes:[{
+						type:"rotate",
+						x:0, y:1, z:0, // axis
+						angle:90.0,
+						nodes:[{
+							type:"translate",
+							id:"clipplane_translate",
+							x:0,y:0,z:0,
+							nodes:[{
+								type:"geometry", 
+								source:{
+									type:"plane",
+									width:100,
+									height:100,
+									widthSegments:1,
+									heightSegments:1,
+									normals: [0.1, 0, 0]
+								}
+							}]
+						}]
+					}]
+				}]
+			});
+	    translateNode.set("x", -centerpoint.x);
+	    translateNode.set("y", -centerpoint.y);
+	    translateNode.set("z", -centerpoint.z);
+	    newInput = true;
+	}
+
+
+    var pagesCount = 100;
+    var pageLength = 0;
+    var lastPageLength = 0;
+    $.ajax({ url: 'https://api.mongolab.com/api/1/databases/revitmodel/collections/simplesamplemodelinscenejs?c=true&apiKey=95_aw1Mpmlz3UAbIWGacgzH1a00vPopr',
+      type: "GET",
+      contentType: "application/json",
+      success: function(msg) {
+        var totallInstances = parseInt(msg);
+        pageLength = Math.floor(totallInstances/pagesCount);
+        lastPageLength = totallInstances - pageLength * (pagesCount - 1);
+        //alert(pagesLength + "x 99 + " + lastPageLength + "=" + totallInstances); //11
+
+
+        // paging
+        window.modelNodes = [];
+        for(var i=0; i<pagesCount; i++)
+        {
+          var newPageLength = (i==pagesCount-1)? lastPageLength : pageLength;
+          var urlString = 'https://api.mongolab.com/api/1/databases/revitmodel/collections/simplesamplemodelinscenejs?sk='+ (i*pageLength).toString() +
+            '&l=' + newPageLength.toString() + '&apiKey=95_aw1Mpmlz3UAbIWGacgzH1a00vPopr';
+          //alert(urlString);
+          $.ajax({ url: urlString,
+            type: "GET",
+            contentType: "application/json",
+            success: function(msg) {
+              var val = progressbar.progressbar( "value" ) || 0;        
+              progressbar.progressbar( "value", val + 1 );
+
+              for(var j = 0; j<msg.length; j++)
+              {
+              	var obj = msg[j];
+              	if(obj != null)
+              	{
+              		window.modelNodes.push(obj);
+              	}	
+              }
+              if(window.modelNodes.length == totallInstances)
+              {
+              	// load them to the scene.
+              	loadModelWithCenterpoint({ x: -6.97676849365234, y: 11.3435325622559, z: -14.2272529602051 });
+              	progressbar.progressbar( "value", 100 );
+              }
+
+            }
+          });          
+        }
+
+      }
+    });
+
+
+	  var shader = scene.findNode("myShader");
+	  var constantvalue = 50
+	  var step = 0.1
+	  var time = -constantvalue;
+	  var factor = 1;
+
+	  scene.on("tick",
+	  	function(){
+	  		var clipplane_translater = scene.findNode("clipplane_translate");
+	  		if(clipplane_translater == null)
+	  			return;
+	  		if(time > constantvalue)
+	  		{
+	  			time = constantvalue - step;
+	  			factor = -1;
+	  		}
+	  		if(time < -constantvalue)
+	  		{
+	  			time = -constantvalue + step;
+	  			factor = 1;
+	  		}
+	  		time += factor*step;
+	  		clipplane_translater.set({ x:10, z: time -6.977 });
+	  		shader.setParams({ clipNormalAndDist:[1,0,0, time] });
+	  	});
+
+	  new SceneJS.OrbitControls(scene, {
+	  	yaw:30,
+	  	pitch:-30,
+	  	zoom:10,
+	  	eye: { x:120, y:90, z:100},
+	  	look: {x:0, y:0, z:0},
+	  	up: {x:0, y:1.0, z:0}
+	  });	 
+
+	  $(document).ready(function(){
+	  	UILayout.Initialize();
+	  });
+	  </script>
+	</body>

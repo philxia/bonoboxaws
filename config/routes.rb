@@ -7,6 +7,7 @@ Bonobox::Application.routes.draw do
   root to: 'home#index'
 
   get '/index' => 'home#index'
+  get '/leftframe' => 'home#leftframe'
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
