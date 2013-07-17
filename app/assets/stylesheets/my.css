@@ -1,0 +1,275 @@
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
+  margin:0;
+  padding:0;
+}
+
+table {
+  border-collapse:collapse;
+  border-spacing:0;
+}
+fieldset,img { 
+  border:0;
+}
+address,caption,cite,code,dfn,em,strong,th,var {
+  font-style:normal;
+  font-weight:normal;
+}
+ol,ul {
+  list-style:none;
+}
+caption,th {
+  text-align:left;
+}
+h1,h2,h3,h4,h5,h6 {
+  font-size:100%;
+  font-weight:normal;
+}
+q:before,q:after {
+  content:'';
+}
+abbr,acronym { border:0;}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+*, html, body {
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+	margin: 0px;
+	padding: 0px;
+	font-family: 'Lucida Grande', 'Lucida Sans Unicode', '宋体', '新宋体', arial, verdana, sans-serif;
+	color: #666;
+	font-size:12px;
+	line-height: 150%;
+}
+
+iframe {
+	margin: 5px;
+}
+
+#header {
+	margin: 0px;
+	border: 0px;
+	background: #3D6AA2;
+	width: 100%;
+	height: 44px;
+}
+
+#branding {
+	float: left;
+	width: 200px;
+	padding: 0 7px 0 10px;
+	font-size: 10px;
+	color: #fff;
+}
+
+#home {
+  display: block;
+  width: 200px;
+  height: 44px;
+  line-height: 44px;
+  background: transparent url(./images/logo.png) no-repeat 0 50%;
+  text-indent: 45px;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  font-size: 17px;
+  text-indent: -900em;
+}
+
+
+#sidebar {
+	padding: 0px;
+	margin: 0px;
+	font-size: 11px;
+	width: 217px;
+	position: absolute;
+	top: 45px;
+	left: 0;
+	background-color: #fff;
+	color: #444;
+	height: 100%;
+}
+
+#mainbox {
+	position: absolute;
+	top: 45px;
+	left: 220px;
+	margin: 0px;
+	background: #fff;
+}
+
+#leftcontent {
+	float: left;
+	margin: 2px 0px 2px 0px;
+	padding: 0px;
+	height: 100%;
+	background: #fff;
+	border-style: solid;
+	border-width: 1px;
+	border-color: gray;
+}
+
+#handler_vertical {
+	position: absolute;
+	//float: left;
+	margin: 0px;
+	padding: 0px;
+	width: 8px;
+	background: url(./images/handle-v.png) 3px 50% no-repeat;
+}
+
+#rightcontent {
+	position: absolute;
+	//float: left;
+	margin: 2px 0px 2px 0px;
+	padding: 0px;
+	background: #fff;
+	border-style: solid;
+	border-width: 1px;
+	border-color: gray;
+}
+
+#footer {
+	position: absolute;
+	clear: both;
+	maring: 2px 0px 2px 0px;
+	padding: 5px 0px 5px 0px;
+	background: #3D6AA2;
+	height: 40px;
+	width: 100%;
+}
+
+/* actions */
+#actions {
+  height: 44px;
+  font-size: 13px;
+}
+
+#actions ul.actionCont {
+	float: left;
+}
+
+#actions ul.right {
+    float: right;
+}
+
+#actions li.actionItem {
+    float: left;
+    position: relative;
+    margin-right: 1px;
+}
+
+#actions li.actionItem .aiButton,
+#actions li.actionItem .aiButton span,
+#actions ul.dropdown li.actionItem a.aiButton {
+    height: 44px;
+}
+
+#actions li.actionItem a.aiButton {
+    display: block;
+    outline: none;
+    text-decoration: none;
+    color: #fff;
+    background: #355E95;
+    padding: 0 10px;
+}
+
+#actions li.actionItem a.aiButton span {
+    line-height: 44px;
+    margin-right: 6px;
+    font-size: .85em;
+}
+
+#actions li.noIcon a.aiButton span {
+    padding: 0 0 0 6px;
+    margin-right: 0;
+}
+
+#actions li.actionItem #mobile.aiButton span {
+    margin-right: 0;
+}
+
+#actions li.actionItem a.aiButton span.selected {
+    color: #555;
+    background: #fff;
+}
+
+
+#actions ul.dropdown .dropdownCont li {
+    line-height: 26px;
+}
+
+#actions ul.dropdown .dcWrapper a {
+    color: #4679BD;
+    text-decoration: none;
+}
+
+#actions ul.dropdown .dcWrapper a:hover {
+    text-decoration: underline;
+}
+
+#actions ul.dropdown .dropdownCont li a {
+    display: block;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#actions ul.dropdown .dropdownCont li a span {
+    margin: 0 6px;
+}
+
+#actions ul.dropdown .dropdownCont li a:hover {
+    background: #eee;
+}
+
+#actions ul.collapsed li.actionItem {
+}
+
+#actions ul.dropdown li.actionItem a.aiButton {
+}
+
+#actions ul.dropdown li.actionItem a.aiButton span {
+    padding: 0 0 0 6px;
+    margin-right: 0;
+}
+
+#actions #toggleSidebarUl {
+    position: absolute;
+    top: 0;
+    left: 165px;
+    margin-left: -40px;
+}
+
+#actions #toggleSidebar {
+    border-width: 0px;
+    display: none;
+    outline: none;
+    text-decoration: none;
+    text-shadow: 0;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 12px;
+    background: transparent;
+}
+
+#actions #toggleSidebar span {
+    text-indent: -999px;
+    padding: 0 8px;
+    width: 12px;
+}
+
+#actions #showjscode {
+    display: none;
+}
+
+#actions #collaborate sup {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    vertical-align: middle;
+    opacity: 0.4;
+    font-size: .7em;
+    padding: 2px 3px;
+    text-transform: uppercase;
+
+}

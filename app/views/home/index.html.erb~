@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="gb2312">
+  <head>
+	<title>Bonobox</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+	<link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="/favicon.con" type="image/x-icon" />
+	<%= stylesheet_link_tag 'application' %>
+	<%= javascript_include_tag 'application' %>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  </head>
+  <body>
+	<div id="header">
+	  <div id="branding">
+		<p id="name">
+		  <a title="bonobox (alpha)" href="/" id="home">
+			bonobox 
+			<span></span>
+		  </a>
+		</p>
+	  </div>
+	  <div id="actions">
+		<ul class="actionCont collapsed" id="toggleSidebarUI"></ul>
+		<ul class="actionCont collapsed">
+		  <li class="actionItem">
+			<a class="aiButton" id="run" title="Run (CTRL + Return)" href="#run">
+			  <span class="icon-caret-right"></span>
+			  Run
+			</a>
+		  </li>
+		</ul>
+		<ul class="actionCont right">
+		  <li class="actionItem noIcon">
+			<a class="aiButton" id="login" title="Login" href="/user/login">
+			  Login/Sign up
+			  <span class="icon-user"></span>
+			</a>
+		  </li>
+	  </div>
+	</div>
+	<div id="sidebar"></div>
+	<div id="mainbox">
+	  <div id="leftcontent"></div>
+	  <div class="ui-widget-content" id="handler_vertical">
+	  </div>
+	  <div id="rightcontent">
+		<!-- <iframe id="blocky_frame" src="rightframe.html"></iframe> -->
+	  </div>
+	</div>
+	<div id="footer"></div>
+	<script type="text/javascript">
+    // window.blocklyLoaded = function(blockly) {
+    //     // Called once Blockly is fully loaded.
+    //     window.Blockly = blockly;
+    // }
+	$(document).ready(function(){
+		UILayout.Initialize();
+	});
+	</script>
+  </body>
+</html>
