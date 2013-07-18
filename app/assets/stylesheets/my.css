@@ -35,7 +35,6 @@ abbr,acronym { border:0;}
 }
 
 iframe {
-  margin: 5px;
   width: 100%;
   height: 100%;
 }
@@ -104,7 +103,7 @@ body {
 #leftcontent {
 	float: left;
 	margin: 2px 0px 2px 0px;
-	padding: 0px;
+	//padding: 5px;
 	height: 100%;
 	background: #fff;
 	border-style: solid;

@@ -21,6 +21,7 @@
   	body {
   		width: 100%;
   		height: 100%;
+  		overflow:hidden;
   	}
   	.ui-progressbar {
   		position: relative;
@@ -58,9 +59,9 @@
   	</style>
 
 </head>
-<body>
+<body scroll=no>
 	<div id="progressbar"><div class="progress-label">Loading...</div></div>
-	<canvas id="canvas3d"></canvas>
+	<canvas id="canvas3d" ></canvas>
 	<script type="text/javascript">
 
 	var progressbar = $( "#progressbar" ),
@@ -73,11 +74,10 @@
       },
       complete: function() {
         progressLabel.text( "Complete!" );
-        $("#progressbar").remove();
       }
     });
 
-	var scene = SceneJS.createScene(
+	window.scene = SceneJS.createScene(
 	{
 		id:"theScene",
 		canvasId:"canvas3d",
@@ -118,6 +118,7 @@
 					// Projection
 					{
 						type: "camera",
+						id: "theCamera",
 						optics: {
 							type: "perspective",
 							fovy: 25.0,
@@ -276,6 +277,7 @@
               	// load them to the scene.
               	loadModelWithCenterpoint({ x: -6.97676849365234, y: 11.3435325622559, z: -14.2272529602051 });
               	progressbar.progressbar( "value", 100 );
+              	$("#progressbar").remove();
               }
 
             }
@@ -320,9 +322,5 @@
 	  	look: {x:0, y:0, z:0},
 	  	up: {x:0, y:1.0, z:0}
 	  });	 
-
-	  $(document).ready(function(){
-	  	UILayout.Initialize();
-	  });
 	  </script>
 	</body>

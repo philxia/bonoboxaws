@@ -12,4 +12,5 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require scenejs/scenejs
 //= require my
